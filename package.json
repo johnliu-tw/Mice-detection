@@ -1,0 +1,13 @@
+{
+  "name": "mice-detection",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "David Liu <david.liu.950627@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.5.0"
+  }
+}
