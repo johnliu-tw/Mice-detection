@@ -5,11 +5,102 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mice detection</title>
-    <script type="module" src="app.js"></script>
+    <style>
+        hr { margin: 60px 0;}
+    </style>
 </head>
 <body>
-    <h1>Mice detection</h1>
-    <h2>1. Select video file</h2>
+    <!-- Sample images -->
+    <div style="display: none;">
+        <img src="./images/up.png" class="up" />
+        <img src="./images/up_1.png" class="up" />
+        <img src="./images/up_2.png" class="up" />
+        <img src="./images/up_3.png" class="up" />
+        <img src="./images/up_4.png" class="up" />
+        <img src="./images/up_5.png" class="up" />
+        <img src="./images/up_6.png" class="up" />
+        <img src="./images/up_7.png" class="up" />
+        <img src="./images/up_8.png" class="up" />
+        <img src="./images/up_9.png" class="up" />
+        <img src="./images/up_10.png" class="up" />
+        <img src="./images/up_11.png" class="up" />
+        <img src="./images/up_12.png" class="up" />
 
+        <img src="./images/mid.png" class="mid" />
+        <img src="./images/mid_1.png" class="mid" />
+        <img src="./images/mid_2.png" class="mid" />
+        <img src="./images/mid_3.png" class="mid" />
+        <img src="./images/mid_4.png" class="mid" />
+        <img src="./images/mid_5.png" class="mid" />
+        <img src="./images/mid_6.png" class="mid" />
+        <img src="./images/mid_7.png" class="mid" />
+        <img src="./images/mid_8.png" class="mid" />
+        <img src="./images/mid_9.png" class="mid" />
+        <img src="./images/mid_10.png" class="mid" />
+        <img src="./images/mid_11.png" class="mid" />
+
+        <img src="./images/down.png" class="down" />
+        <img src="./images/down_1.png" class="down" />
+        <img src="./images/down_2.png" class="down" />
+        <img src="./images/down_3.png" class="down" />
+        <img src="./images/down_4.png" class="down" />
+        <img src="./images/down_5.png" class="down" />
+        <img src="./images/down_6.png" class="down" />
+        <img src="./images/down_7.png" class="down" />
+        <img src="./images/down_8.png" class="down" />
+        <img src="./images/down_9.png" class="down" />
+        <img src="./images/down_10.png" class="down" />
+    </div>
+
+    <h1>Mice detection</h1>
+    <h2>1. 選擇一個影片並選擇拉選至籠子清晰可見的時間</h2>
+    <input type="file" name="video" id="videoInput">
+    <video id="previewVideo" controls width="720"></video>
+    <hr>
+
+    <h2>2. 標記出籠子的範圍（使用矩形）</h2>
+    x:
+    <input type="number" value="20" id="x">
+    y:
+    <input type="number" value="20" id="y">
+    Width:
+    <input type="number" value="100" id="width">
+    Height:
+    <input type="number" value="200" id="height">
+    Lock:
+    <input type="checkbox" id="lock">
+    <br /><br />
+    <canvas id="canvas"></canvas>
+    <hr>
+
+    <h2>3. 開始統計</h2>
+    <video id="statVideo" controls width="720"></video>
+    <canvas id="statCanvas" style="display: none;"></canvas>
+    <br>
+    
+    <div style="display: flex; font-size: 32px;">
+        <div style="flex: 1">
+            <h3>統計資料</h3>
+            <button id="startStat" type="button">開始統計</button>
+            <button id="pauseStat" type="button" disabled>暫停統計</button>
+
+            <div>
+                上: <span id="up-seconds">0.0</span> 秒
+            </div>
+            <div>
+                中: <span id="mid-seconds">0.0</span> 秒
+            </div>
+            <div>
+                下: <span id="down-seconds">0.0</span> 秒
+            </div>
+        </div>
+        <div style="flex: 1">
+            <h3>選擇範圍內的影像</h3>
+            <canvas id="scopeCanvas"></canvas>
+        </div>
+    </div>
+    <hr>
+
+    <script type="module" src="app.js"></script>
 </body>
 </html>
