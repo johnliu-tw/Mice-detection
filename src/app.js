@@ -127,7 +127,7 @@ let mobilenetModule = null;
         const logits2 = mobilenetModule.infer(img2, true);
         classifier.addExample(logits2, 2);
     })
-    console.log('initialized');
+    alert('data loaded');
 })();
 
 const predict = async () => {
@@ -152,10 +152,15 @@ $('#startStat').on('click', function () {
 
     (async () => {
         const duration = statVideoElem.duration;
-        const changedTime = 30 / 1000;
+        let lastCurrentTime = statVideoElem.currentTime;
+        let currentTime = statVideoElem.currentTime;
         statVideoElem.play();
 
-        while(!pause && (statVideoElem.currentTime + 0.1 < duration)) {
+        while(!pause && (currentTime + 0.1 < duration)) {
+            currentTime = statVideoElem.currentTime;
+            const changedTime = currentTime - lastCurrentTime;
+            lastCurrentTime = currentTime;
+
             const result = await predict()
             if (result.classIndex === 0) {
                 upSeconds += changedTime;
@@ -167,8 +172,15 @@ $('#startStat').on('click', function () {
                 downSeconds += changedTime;
                 $downSeconds.text(roundNum(downSeconds));
             }
-
-            await sleep(changedTime);
         }        
     })();
+});
+
+$('#resetStat').on('click', function () {
+    upSeconds = 0.0;
+    $upSeconds.text(roundNum(upSeconds));
+    midSeconds = 0.0;
+    $midSeconds.text(roundNum(midSeconds));
+    downSeconds = 0.0;
+    $downSeconds.text(roundNum(downSeconds));
 });
