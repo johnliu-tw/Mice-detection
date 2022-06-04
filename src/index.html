@@ -9,76 +9,27 @@
         hr { margin: 60px 0;}
     </style>
 </head>
-<body>
+<body id="app">
     <!-- Sample images -->
     <div style="display: none;">
-        <img src="./images/up.png" class="up" />
-        <img src="./images/up_1.png" class="up" />
-        <img src="./images/up_2.png" class="up" />
-        <img src="./images/up_3.png" class="up" />
-        <img src="./images/up_4.png" class="up" />
-        <img src="./images/up_5.png" class="up" />
-        <img src="./images/up_6.png" class="up" />
-        <img src="./images/up_7.png" class="up" />
-        <img src="./images/up_8.png" class="up" />
-        <img src="./images/up_9.png" class="up" />
-        <img src="./images/up_10.png" class="up" />
-        <img src="./images/up_11.png" class="up" />
-        <img src="./images/up_12.png" class="up" />
-        <img src="./images/up_12.png" class="up" />
-        <img src="./images/up_13.png" class="up" />
-        <img src="./images/up_14.png" class="up" />
-        <img src="./images/up_15.png" class="up" />
-        <img src="./images/up_16.png" class="up" />
-        <img src="./images/up_17.png" class="up" />
-        <img src="./images/up_18.png" class="up" />
-
-        <img src="./images/mid.png" class="mid" />
-        <img src="./images/mid_1.png" class="mid" />
-        <img src="./images/mid_2.png" class="mid" />
-        <img src="./images/mid_3.png" class="mid" />
-        <img src="./images/mid_4.png" class="mid" />
-        <img src="./images/mid_5.png" class="mid" />
-        <img src="./images/mid_6.png" class="mid" />
-        <img src="./images/mid_7.png" class="mid" />
-        <img src="./images/mid_8.png" class="mid" />
-        <img src="./images/mid_9.png" class="mid" />
-        <img src="./images/mid_10.png" class="mid" />
-        <img src="./images/mid_11.png" class="mid" />
-        <img src="./images/mid_12.png" class="mid" />
-        <img src="./images/mid_13.png" class="mid" />
-        <img src="./images/mid_14.png" class="mid" />
-        <img src="./images/mid_15.png" class="mid" />
-        <img src="./images/mid_16.png" class="mid" />
-        <img src="./images/mid_17.png" class="mid" />
-        <img src="./images/mid_18.png" class="mid" />
-        <img src="./images/mid_19.png" class="mid" />
-        <img src="./images/mid_20.png" class="mid" />
-
-        <img src="./images/down.png" class="down" />
-        <img src="./images/down_1.png" class="down" />
-        <img src="./images/down_2.png" class="down" />
-        <img src="./images/down_3.png" class="down" />
-        <img src="./images/down_4.png" class="down" />
-        <img src="./images/down_5.png" class="down" />
-        <img src="./images/down_6.png" class="down" />
-        <img src="./images/down_7.png" class="down" />
-        <img src="./images/down_8.png" class="down" />
-        <img src="./images/down_9.png" class="down" />
-        <img src="./images/down_10.png" class="down" />
-        <img src="./images/down_11.png" class="down" />
-        <img src="./images/down_12.png" class="down" />
-        <img src="./images/down_13.png" class="down" />
-        <img src="./images/down_14.png" class="down" />
-        <img src="./images/down_15.png" class="down" />
-        <img src="./images/down_16.png" class="down" />
-        <img src="./images/down_17.png" class="down" />
-        <img src="./images/down_18.png" class="down" />
-        <img src="./images/down_19.png" class="down" />
-        <img src="./images/down_20.png" class="down" />
+        <template v-for="i in images[mode]['up'][1]">
+            <img v-if="i >= images[mode]['up'][0]" :src="imgPath('up', i)" class="up" />
+        </template>
+        <template v-for="i in images[mode]['mid'][1]">
+            <img v-if="i >= images[mode]['mid'][0]" :src="imgPath('mid', i)" class="mid" />
+        </template>
+        <template v-for="i in images[mode]['down'][1]">
+            <img v-if="i >= images[mode]['down'][0]" :src="imgPath('down', i)" class="down" />
+        </template>
     </div>
 
     <h1>Mice detection</h1>
+    <div>
+        目前模式: {{ currentMode }} 模式選擇: 
+        <a href="/src/index.html?mode=left">左箱子</a> &nbsp;&nbsp; 
+        <a href="/src/index.html?mode=center">中箱子</a> &nbsp;&nbsp; 
+        <a href="/src/index.html?mode=right">右箱子</a>
+    </div>
     <h2>1. 選擇一個影片並選擇拉選至籠子清晰可見的時間</h2>
     <input type="file" name="video" id="videoInput">
     <video id="previewVideo" controls width="720"></video>
@@ -128,6 +79,50 @@
     </div>
     <hr>
 
-    <script type="module" src="app.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    mode: 'left',
+                    images: {
+                        right:{
+                            up: [16, 40],
+                            mid: [16, 33],
+                            down: [15, 38]
+                        },
+                        center:{
+                            up: [13, 15],
+                            mid: [12, 15],
+                            down: [11, 14]
+                        },
+                        left:{
+                            up: [1, 12],
+                            mid: [1, 11],
+                            down: [1, 11]
+                        }
+                    }
+                }
+            },
+            created() {
+                const url = new URL(window.location.href);
+                const mode = url.searchParams.get("mode") ?? 'left';
+                this.mode = mode;
+            },
+            computed: {
+                currentMode(){
+                    if(this.mode === 'left') return '左箱子';
+                    if(this.mode === 'center') return '中箱子';
+                    if(this.mode === 'right') return '右箱子';
+                }
+            },
+            methods:{
+                imgPath(position, number){
+                    return `./images/${this.mode}/${position}/${position}_${number}.png`
+                }
+            }
+        }).mount('#app')
+    </script>
+    <script src="bundle.js"></script>
 </body>
 </html>
